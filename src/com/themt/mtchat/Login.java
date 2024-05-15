@@ -102,11 +102,7 @@ public class Login extends JFrame {
 	}
 	
 	
-	/**
-	 * @param name
-	 * @param address
-	 * @param port
-	 */
+	
 	/**
 	 * @param name
 	 * @param address
