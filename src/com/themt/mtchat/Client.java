@@ -28,17 +28,19 @@ import javax.swing.text.DefaultCaret;
 public class Client extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
 	
+	private DatagramSocket socket;
+
 	private String name, address;
 	private int port;
+	private InetAddress ip;
+	private Thread send;
+	
+	private JPanel contentPane;
 	private JTextField txtMessage;
 	private JTextArea history;
 	private DefaultCaret caret;
 	
-	private DatagramSocket socket;
-	private InetAddress ip;
-	private Thread send;
 
 	public Client(String name, String address, int port) {
 		setTitle("MT Chat Client");
@@ -53,7 +55,7 @@ public class Client extends JFrame {
 		}
 		createWindow();
 		console("Attempting a connection to " + address + ":" + port + ", user: " + name);
-		String connection = name + " connected from " + address + ":" + port;
+		String connection = "/c/" + name;
 		send(connection.getBytes());
 	}
 	
