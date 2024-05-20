@@ -35,11 +35,16 @@ public class Client{
 	private int port;
 	private InetAddress ip;
 	private Thread send;
+	private int ID = -1;
 	
 	public Client(String name, String address, int port) {
 		this.name = name;
 		this.address = address;
 		this.port = port;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	
@@ -57,19 +62,7 @@ public class Client{
 		return true;
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
-	public String getAddress() {
-		return address;
-	}
-	
-	public int getPort() {
-		return port;
-	}
-	
-	private String receive() {
+	public String receive() {
 		byte[] data = new byte[1024];
 		DatagramPacket packet = new DatagramPacket(data, data.length);
 		try {
@@ -80,6 +73,7 @@ public class Client{
 			e.printStackTrace();
 		}
 		String message = new String(packet.getData());
+		
 		return message;
 	}
 	
@@ -96,7 +90,16 @@ public class Client{
 		};
 		send.start();
 	}
-	
+
+	public void setID(int ID) {
+		this.ID = ID;
+	}
 	
 
+	public int getID() {
+		// TODO Auto-generated method stub
+		return ID;
+	}
+
+	
 }
