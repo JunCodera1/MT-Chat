@@ -1,13 +1,6 @@
 package com.themt.mtchat;
 
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -15,20 +8,9 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.DefaultCaret;
-
-public class Client{
-
+public class Client {
 	private static final long serialVersionUID = 1L;
-	
+
 	private DatagramSocket socket;
 
 	private String name, address;
@@ -36,18 +18,25 @@ public class Client{
 	private InetAddress ip;
 	private Thread send;
 	private int ID = -1;
-	
+
 	public Client(String name, String address, int port) {
 		this.name = name;
 		this.address = address;
 		this.port = port;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
-	
+
+	public String getAddress() {
+		return address;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
 	public boolean openConnection(String address) {
 		try {
 			socket = new DatagramSocket();
@@ -61,22 +50,19 @@ public class Client{
 		}
 		return true;
 	}
-	
+
 	public String receive() {
 		byte[] data = new byte[1024];
 		DatagramPacket packet = new DatagramPacket(data, data.length);
 		try {
 			socket.receive(packet);
-			packet.getAddress();
-			packet.getPort();
-		}catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		String message = new String(packet.getData());
-		
 		return message;
 	}
-	
+
 	public void send(final byte[] data) {
 		send = new Thread("Send") {
 			public void run() {
@@ -91,15 +77,22 @@ public class Client{
 		send.start();
 	}
 
+	public void close() {
+		new Thread() {
+			public void run() {
+				synchronized (socket) {
+					socket.close();
+				}
+			}
+		}.start();
+	}
+
 	public void setID(int ID) {
 		this.ID = ID;
 	}
-	
 
 	public int getID() {
-		// TODO Auto-generated method stub
 		return ID;
 	}
 
-	
 }
